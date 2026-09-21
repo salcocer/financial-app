@@ -39,3 +39,8 @@ export const icons = {
 } as const;
 
 export type IconKey = keyof typeof icons;
+
+/*
+We are just importing the icons from the assets folder and exporting them as a single object. 
+This way we can easily access the icons in our components.
+*/
