@@ -41,6 +41,9 @@ module.exports = {
         24: "96px",
         30: "120px",
       },
+      borderRadius: {
+        "4xl": "2rem",
+      },
       fontFamily: {
         sans: "sans-regular",
         "sans-light": "sans-light",

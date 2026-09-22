@@ -32,7 +32,7 @@
   }
 
   .home-user-name {
-    @apply ml-4 text-2xl font-sans-bold text-primary;
+    @apply ml-4 text-xl font-sans-bold text-primary;
   }
 
   .home-add-icon {
@@ -40,7 +40,7 @@
   }
 
   .home-balance-card {
-    @apply my-2.5 min-h-50 justify-between gap-5 rounded-bl-4xl rounded-tr-4xl bg-accent p-6;
+    @apply my-2.5 min-h-[200px] justify-between gap-5 rounded-bl-4xl rounded-tr-4xl bg-accent p-6;
   }
 
   .home-balance-label {
@@ -52,7 +52,7 @@
   }
 
   .home-balance-amount {
-    @apply text-4xl font-sans-extrabold text-white;
+    @apply text-4xl font-sans-extra-bold text-white;
   }
 
   .home-balance-date {
@@ -212,11 +212,11 @@
   }
 
   .auth-logo-mark-text {
-    @apply text-2xl font-sans-extrabold text-background;
+    @apply text-2xl font-sans-extra-bold text-background;
   }
 
   .auth-wordmark {
-    @apply text-3xl font-sans-extrabold text-primary;
+    @apply text-3xl font-sans-extra-bold text-primary;
   }
 
   .auth-wordmark-sub {
