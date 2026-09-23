@@ -1,15 +1,15 @@
-import { Link } from "expo-router";
-import React from "react";
-import { Text } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { Link } from 'expo-router';
+import React from 'react';
+import { Text } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const SignIn = () => {
-  return (
-    <SafeAreaView className="flex-1  bg-background p-5">
-      <Text>Sign-in</Text>
-      <Link href="/(auth)/sign-up">Create Account</Link>
-    </SafeAreaView>
-  );
+    return (
+        <SafeAreaView className="flex-1  bg-background p-5">
+            <Text>Sign-in</Text>
+            <Link href="/(auth)/sign-up">Create Account</Link>
+        </SafeAreaView>
+    );
 };
 
 export default SignIn;
