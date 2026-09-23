@@ -19,6 +19,7 @@ module.exports = {
                 success: '#16a34a',
                 destructive: '#dc2626',
                 subscription: '#8fd1bd',
+                red: '#ff0000',
             },
             spacing: {
                 0: '0px',
