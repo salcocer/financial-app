@@ -2,6 +2,9 @@ import { formatCurrency, formatStatusLabel, formatSubscriptionDateTime } from '@
 import clsx from 'clsx';
 import React from 'react';
 import { Image, Pressable, Text, View } from 'react-native';
+import Animated, { FadeIn, FadeOut, LinearTransition } from 'react-native-reanimated';
+
+const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
 const SubscriptionCard = ({
     name,
@@ -20,7 +23,8 @@ const SubscriptionCard = ({
     status,
 }: SubscriptionCardProps) => {
     return (
-        <Pressable
+        <AnimatedPressable
+            layout={LinearTransition.duration(250)}
             onPress={onPress}
             className={clsx('sub-card', expanded ? 'sub-card-expanded' : 'bg-card')}
             style={!expanded && color ? { backgroundColor: color } : undefined}>
@@ -46,7 +50,10 @@ const SubscriptionCard = ({
             </View>
 
             {expanded && (
-                <View className="sub-bdy">
+                <Animated.View
+                    entering={FadeIn.duration(200)}
+                    exiting={FadeOut.duration(150)}
+                    className="sub-bdy">
                     <View className="sub-detail">
                         <View className="sub-row">
                             <Text className="sub-label">Payment: </Text>
@@ -79,9 +86,9 @@ const SubscriptionCard = ({
                             </Text>
                         </View>
                     </View>
-                </View>
+                </Animated.View>
             )}
-        </Pressable>
+        </AnimatedPressable>
     );
 };
 
