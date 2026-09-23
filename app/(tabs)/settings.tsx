@@ -1,6 +1,7 @@
+import images from '@/constants/images';
 import { useAuth, useUser } from '@clerk/expo';
 import React from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const Settings = () => {
@@ -24,7 +25,10 @@ const Settings = () => {
 
             <View className="settings-user-card">
                 <View className="settings-user-avatar">
-                    <Text className="settings-user-initial">{initial}</Text>
+                    <Image
+                        source={user?.imageUrl ? { uri: user.imageUrl } : images.avatar}
+                        className="home-avatar"
+                    />
                 </View>
                 <View className="min-w-0 flex-1">
                     <Text numberOfLines={1} className="settings-user-name">
