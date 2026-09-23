@@ -32,6 +32,12 @@ yarn-error.*
 
 # local env files
 .env*.local
+.env
+
+# agent skills (installed via `npx skills add`)
+/.agents/
+/.claude/skills/
+skills-lock.json
 
 # typescript
 *.tsbuildinfo

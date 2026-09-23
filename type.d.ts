@@ -1,4 +1,10 @@
-import type { ImageSourcePropType } from 'react-native';
+import type React from 'react';
+import type {
+    ImageSourcePropType,
+    KeyboardTypeOptions,
+    TextInput,
+    TextInputProps,
+} from 'react-native';
 
 declare global {
     interface AppTab {
@@ -48,6 +54,32 @@ declare global {
 
     interface ListHeadingProps {
         title: string;
+    }
+
+    interface AuthTextFieldProps {
+        label: string;
+        value: string;
+        onChangeText: (value: string) => void;
+        placeholder?: string;
+        error?: string | null;
+        secureTextEntry?: boolean;
+        keyboardType?: KeyboardTypeOptions;
+        autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters';
+        autoComplete?: TextInputProps['autoComplete'];
+        textContentType?: TextInputProps['textContentType'];
+        editable?: boolean;
+        maxLength?: number;
+        returnKeyType?: TextInputProps['returnKeyType'];
+        onSubmitEditing?: () => void;
+        rightAction?: { label: string; onPress: () => void };
+        inputRef?: React.RefObject<TextInput | null>;
+    }
+
+    interface AuthButtonProps {
+        label: string;
+        onPress: () => void;
+        loading?: boolean;
+        disabled?: boolean;
     }
 }
 
