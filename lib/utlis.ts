@@ -1,4 +1,7 @@
+import { PASSWORD_MIN_LENGTH } from '@/constants/auth';
 import dayjs from 'dayjs';
+
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export const formatCurrency = (value: number, currency = 'USD'): string => {
     try {
@@ -23,3 +26,7 @@ export const formatStatusLabel = (value?: string): string => {
     if (!value) return 'Unknown';
     return value.charAt(0).toUpperCase() + value.slice(1);
 };
+
+export const isValidEmail = (value: string): boolean => EMAIL_REGEX.test(value.trim());
+
+export const isValidPassword = (value: string): boolean => value.length >= PASSWORD_MIN_LENGTH;

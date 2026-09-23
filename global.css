@@ -307,6 +307,78 @@
         @apply text-sm font-sans-bold text-accent;
     }
 
+    .auth-field-label-row {
+        @apply flex-row items-center justify-between;
+    }
+
+    .auth-field-action {
+        @apply text-xs font-sans-semibold text-accent;
+    }
+
+    .auth-code-input {
+        @apply text-center text-2xl tracking-[10px];
+    }
+
+    .auth-error-banner {
+        @apply flex-row items-center gap-2 rounded-2xl border border-destructive/30 bg-destructive/10 p-3;
+    }
+
+    .auth-error-banner-text {
+        @apply flex-1 text-sm font-sans-medium text-destructive;
+    }
+
+    .auth-success-banner {
+        @apply flex-row items-center gap-2 rounded-2xl border border-success/30 bg-success/10 p-3;
+    }
+
+    .auth-success-banner-text {
+        @apply flex-1 text-sm font-sans-medium text-success;
+    }
+
+    .auth-back-button {
+        @apply size-10 items-center justify-center rounded-full bg-muted;
+    }
+
+    .auth-back-icon {
+        @apply size-5;
+    }
+
+    .auth-loading-screen {
+        @apply flex-1 items-center justify-center bg-background;
+    }
+
+    .auth-resend-row {
+        @apply mt-4 flex-row items-center justify-center gap-1;
+    }
+
+    .settings-user-card {
+        @apply flex-row items-center gap-4 rounded-3xl border border-border bg-card p-5;
+    }
+
+    .settings-user-avatar {
+        @apply size-14 items-center justify-center rounded-full bg-muted;
+    }
+
+    .settings-user-initial {
+        @apply text-xl font-sans-bold text-primary;
+    }
+
+    .settings-user-name {
+        @apply text-lg font-sans-bold text-primary;
+    }
+
+    .settings-user-email {
+        @apply mt-0.5 text-sm font-sans-medium text-muted-foreground;
+    }
+
+    .settings-signout-button {
+        @apply mt-6 items-center rounded-2xl bg-primary py-4;
+    }
+
+    .settings-signout-text {
+        @apply font-sans-bold text-background;
+    }
+
     .modal-overlay {
         @apply flex-1 bg-black/50;
     }
