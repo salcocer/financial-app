@@ -21,7 +21,6 @@ export default function App() {
     return (
         <SafeAreaView className="flex-1 bg-background  p-5">
             <FlatList
-                className="border-2 border-red"
                 ListHeaderComponent={() => (
                     <>
                         <View className="home-header">
@@ -46,7 +45,6 @@ export default function App() {
 
                         <View className="mb-5">
                             <ListHeading title="Upcoming" />
-                            {/* <UpcomingSubscriptionCard data={UPCOMING_SUBSCRIPTIONS[0]} /> */}
                             <FlatList
                                 horizontal
                                 data={UPCOMING_SUBSCRIPTIONS}
