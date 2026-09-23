@@ -19,7 +19,8 @@ const SignIn = () => {
 
     const isSubmitting = fetchStatus === 'fetching';
 
-    const localEmailError = email.length > 0 && !isValidEmail(email) ? 'Enter a valid email address' : null;
+    const localEmailError =
+        email.length > 0 && !isValidEmail(email) ? 'Enter a valid email address' : null;
 
     const handleSubmit = async () => {
         setFormError(null);
@@ -39,6 +40,8 @@ const SignIn = () => {
             password,
         });
 
+        const userData = signIn.userData;
+
         if (error) {
             if (error.code === 'form_identifier_not_found') {
                 setAccountNotFound(true);
@@ -47,6 +50,7 @@ const SignIn = () => {
         }
 
         if (signIn.status === 'complete') {
+            console.log({ userData });
             await signIn.finalize();
             return;
         }
@@ -148,7 +152,11 @@ const SignIn = () => {
                                 <Text className="auth-field-action">Forgot password?</Text>
                             </Link>
 
-                            <AuthButton label="Sign in" onPress={handleSubmit} loading={isSubmitting} />
+                            <AuthButton
+                                label="Sign in"
+                                onPress={handleSubmit}
+                                loading={isSubmitting}
+                            />
                         </View>
 
                         <View className="auth-link-row">
