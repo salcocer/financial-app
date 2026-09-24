@@ -4,8 +4,8 @@ import UpcomingSubscriptionCard from '@/components/UpcomingSubscriptionCard';
 import { HOME_BALANCE, HOME_SUBSCRIPTIONS, UPCOMING_SUBSCRIPTIONS } from '@/constants/data';
 import { icons } from '@/constants/icons';
 import images from '@/constants/images';
+import { useUserStore } from '@/lib/store/userStore';
 import { formatCurrency } from '@/lib/utlis';
-import { useUser } from '@clerk/expo';
 import dayjs from 'dayjs';
 import React, { useState } from 'react';
 import { FlatList, Image, Text, View } from 'react-native';
@@ -13,9 +13,9 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function App() {
     const [expandedSubscriptionId, setExpandedSubscriptionId] = useState<string | null>(null);
-    const { user } = useUser();
-    const displayName = user?.firstName || user?.fullName || 'there';
-    console.log({ user });
+    const username = useUserStore(state => state.username);
+    const imageUrl = useUserStore(state => state.imageUrl);
+    const displayName = username || 'there';
 
     return (
         <SafeAreaView className="flex-1 bg-background  p-5">
@@ -25,7 +25,7 @@ export default function App() {
                         <View className="home-header">
                             <View className="home-user">
                                 <Image
-                                    source={user?.imageUrl ? { uri: user.imageUrl } : images.avatar}
+                                    source={imageUrl ? { uri: imageUrl } : images.avatar}
                                     className="home-avatar"
                                 />
                                 <Text className="home-user-name">{displayName}</Text>

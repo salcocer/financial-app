@@ -1,4 +1,5 @@
 import images from '@/constants/images';
+import { useUserStore } from '@/lib/store/userStore';
 import { useAuth, useUser } from '@clerk/expo';
 import React from 'react';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
@@ -7,16 +8,15 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 const Settings = () => {
     const { signOut } = useAuth();
     const { user } = useUser();
+    const username = useUserStore(state => state.username);
+    const imageUrl = useUserStore(state => state.imageUrl);
+    const clearUser = useUserStore(state => state.clearUser);
 
-    // const initial = (
-    //     user?.firstName?.charAt(0) ??
-    //     user?.primaryEmailAddress?.emailAddress?.charAt(0) ??
-    //     '?'
-    // ).toUpperCase();
-    const displayName = user?.fullName || user?.primaryEmailAddress?.emailAddress || 'Account';
+    const displayName = username || user?.primaryEmailAddress?.emailAddress || 'Account';
 
     const handleSignOut = async () => {
         await signOut();
+        clearUser();
     };
 
     return (
@@ -26,7 +26,7 @@ const Settings = () => {
             <View className="settings-user-card">
                 <View className="settings-user-avatar">
                     <Image
-                        source={user?.imageUrl ? { uri: user.imageUrl } : images.avatar}
+                        source={imageUrl ? { uri: imageUrl } : images.avatar}
                         className="home-avatar"
                     />
                 </View>
@@ -45,7 +45,8 @@ const Settings = () => {
             <TouchableOpacity
                 className="settings-signout-button"
                 onPress={handleSignOut}
-                activeOpacity={0.85}>
+                activeOpacity={0.85}
+            >
                 <Text className="settings-signout-text">Sign Out</Text>
             </TouchableOpacity>
         </SafeAreaView>
