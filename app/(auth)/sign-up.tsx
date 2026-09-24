@@ -1,9 +1,14 @@
 import AuthButton from '@/components/AuthButton';
 import AuthTextField from '@/components/AuthTextField';
-import { APP_NAME, APP_TAGLINE, PASSWORD_MIN_LENGTH, RESEND_COOLDOWN_SECONDS } from '@/constants/auth';
+import {
+    APP_NAME,
+    APP_TAGLINE,
+    PASSWORD_MIN_LENGTH,
+    RESEND_COOLDOWN_SECONDS,
+} from '@/constants/auth';
 import { isValidEmail, isValidPassword } from '@/lib/utlis';
 import { useSignUp } from '@clerk/expo';
-import clsx from 'clsx';
+import { clsx } from 'clsx';
 import { Link, useLocalSearchParams } from 'expo-router';
 import React, { useEffect, useRef, useState } from 'react';
 import { KeyboardAvoidingView, Platform, ScrollView, Text, View } from 'react-native';
@@ -214,7 +219,9 @@ const SignUp = () => {
                                     <Text
                                         className={clsx(
                                             'auth-helper',
-                                            password.length > 0 && passwordIsLongEnough && 'text-success'
+                                            password.length > 0 &&
+                                                passwordIsLongEnough &&
+                                                'text-success'
                                         )}>
                                         At least {PASSWORD_MIN_LENGTH} characters
                                     </Text>
@@ -230,7 +237,8 @@ const SignUp = () => {
                                         returnKeyType="go"
                                         onSubmitEditing={handleCreateAccount}
                                         error={
-                                            confirmPassword.length > 0 && confirmPassword !== password
+                                            confirmPassword.length > 0 &&
+                                            confirmPassword !== password
                                                 ? 'Passwords do not match'
                                                 : null
                                         }
@@ -259,19 +267,29 @@ const SignUp = () => {
                                         error={errors.fields.code?.message}
                                     />
 
-                                    <AuthButton label="Verify email" onPress={handleVerify} loading={isSubmitting} />
+                                    <AuthButton
+                                        label="Verify email"
+                                        onPress={handleVerify}
+                                        loading={isSubmitting}
+                                    />
 
                                     <View className="auth-resend-row">
-                                        <Text className="auth-link-copy">Didn&apos;t get a code?</Text>
+                                        <Text className="auth-link-copy">
+                                            Didn&apos;t get a code?
+                                        </Text>
                                         <Text
                                             className="auth-link"
                                             onPress={handleResend}
                                             suppressHighlighting={resendCooldown > 0}>
-                                            {resendCooldown > 0 ? `Resend in ${resendCooldown}s` : 'Resend'}
+                                            {resendCooldown > 0
+                                                ? `Resend in ${resendCooldown}s`
+                                                : 'Resend'}
                                         </Text>
                                     </View>
 
-                                    <Text className="auth-link text-center" onPress={handleChangeEmail}>
+                                    <Text
+                                        className="auth-link text-center"
+                                        onPress={handleChangeEmail}>
                                         Use a different email
                                     </Text>
                                 </>

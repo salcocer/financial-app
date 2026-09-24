@@ -1,5 +1,5 @@
 import { colors } from '@/constants/theme';
-import clsx from 'clsx';
+import { clsx } from 'clsx';
 import React from 'react';
 import { ActivityIndicator, Text, TouchableOpacity } from 'react-native';
 

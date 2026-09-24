@@ -6,7 +6,7 @@ A mobile app built with [Expo](https://expo.dev) and [Expo Router](https://docs.
 
 ## Tech Stack
 
-| Area                | Technology                                                                     |
+| Area                | Technology                                                                      |
 | ------------------- | ------------------------------------------------------------------------------- |
 | Framework           | [Expo](https://expo.dev) `~54.0.36` (New Architecture enabled)                  |
 | Runtime             | React `19.1.0`, React Native `0.81.5`                                           |
@@ -193,17 +193,17 @@ flowchart TD
 
 ### Current route map
 
-| Path                  | File                           | Auth gate     | Notes                                                                             |
-| ---------------------- | ------------------------------- | ------------- | ---------------------------------------------------------------------------------- |
-| `/`                    | `app/(tabs)/index.tsx`          | signed-in only | Home tab — balance card, "Upcoming" horizontal list, full subscriptions list       |
-| `/subscriptions`       | `app/(tabs)/subscriptions.tsx`  | signed-in only | Subscriptions tab (placeholder)                                                    |
-| `/insights`            | `app/(tabs)/insights.tsx`       | signed-in only | Insights tab (placeholder — intended home for future spending charts/graphs)       |
-| `/settings`            | `app/(tabs)/settings.tsx`       | signed-in only | Shows Clerk user avatar initial, name/email, and a "Sign Out" button               |
-| `/subscriptions/[id]`  | `app/subscriptions/[id].tsx`    | signed-in only | Subscription detail (placeholder — reads `id` via `useLocalSearchParams`)          |
-| `/onboarding`           | `app/onboarding.tsx`             | none           | Onboarding screen (placeholder, contains inline notes on Expo Router concepts)     |
-| `/(auth)/sign-in`        | `app/(auth)/sign-in.tsx`          | signed-out only | Email + password sign-in via Clerk                                                 |
-| `/(auth)/sign-up`         | `app/(auth)/sign-up.tsx`           | signed-out only | Two-phase: create account → verify emailed 6-digit code                            |
-| `/(auth)/forgot-password`  | `app/(auth)/forgot-password.tsx`    | signed-out only | Three-phase: request code → verify code → set new password                         |
+| Path                      | File                             | Auth gate       | Notes                                                                          |
+| ------------------------- | -------------------------------- | --------------- | ------------------------------------------------------------------------------ |
+| `/`                       | `app/(tabs)/index.tsx`           | signed-in only  | Home tab — balance card, "Upcoming" horizontal list, full subscriptions list   |
+| `/subscriptions`          | `app/(tabs)/subscriptions.tsx`   | signed-in only  | Subscriptions tab (placeholder)                                                |
+| `/insights`               | `app/(tabs)/insights.tsx`        | signed-in only  | Insights tab (placeholder — intended home for future spending charts/graphs)   |
+| `/settings`               | `app/(tabs)/settings.tsx`        | signed-in only  | Shows Clerk user avatar initial, name/email, and a "Sign Out" button           |
+| `/subscriptions/[id]`     | `app/subscriptions/[id].tsx`     | signed-in only  | Subscription detail (placeholder — reads `id` via `useLocalSearchParams`)      |
+| `/onboarding`             | `app/onboarding.tsx`             | none            | Onboarding screen (placeholder, contains inline notes on Expo Router concepts) |
+| `/(auth)/sign-in`         | `app/(auth)/sign-in.tsx`         | signed-out only | Email + password sign-in via Clerk                                             |
+| `/(auth)/sign-up`         | `app/(auth)/sign-up.tsx`         | signed-out only | Two-phase: create account → verify emailed 6-digit code                        |
+| `/(auth)/forgot-password` | `app/(auth)/forgot-password.tsx` | signed-out only | Three-phase: request code → verify code → set new password                     |
 
 > Most tab screens still render placeholder text (`<Text>Insights</Text>`, etc.) — the navigation shell and auth flow are fully wired ahead of the finance-tracking feature UI (subscriptions list/detail, insights charts) being built out.
 
@@ -265,19 +265,19 @@ graph LR
 
 ## Configuration Files Reference
 
-| File                        | Purpose                                                                                                                                                                                                         |
-| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `app.json`                   | Expo app manifest: app name/slug/version, icon & splash screen, iOS/Android/Web platform config, plugins (`expo-router`, `expo-splash-screen`, `expo-font`, `@clerk/expo`, `expo-secure-store`), and experimental flags (`typedRoutes`, `reactCompiler`). |
-| `babel.config.js`             | Babel presets: `babel-preset-expo` (with NativeWind's JSX import source) and `nativewind/babel`.                                                                                                                |
-| `metro.config.js`              | Extends Expo's default Metro config with NativeWind, using `global.css` as the Tailwind CSS entry point.                                                                                                        |
-| `tailwind.config.js`            | Tailwind theme configuration — content paths, extended color palette, spacing scale, border radius, font family tokens.                                                                                          |
-| `tsconfig.json`                  | Extends `expo/tsconfig.base`; strict type-checking; `@/*` path alias resolving to the project root.                                                                                                              |
-| `eslint.config.js`                | Flat ESLint config built on `eslint-config-expo`; ignores `dist/*`.                                                                                                                                                |
-| `.prettierrc.json` / `.prettierignore` | Prettier formatting rules plus `prettier-plugin-tailwindcss` for class-name sorting; ignore list for generated/vendor files.                                                                            |
-| `.vscode/settings.json`             | Enables format-on-save code actions: fix-all, organize imports, sort members.                                                                                                                                      |
-| `.vscode/extensions.json`            | Recommends the Expo VS Code extension.                                                                                                                                                                              |
-| `skills-lock.json`                    | Lockfile for Clerk skills installed via `npx skills add` into `.agents/skills/` and `.claude/skills/` (both git-ignored).                                                                                          |
-| `.gitignore`                            | Excludes `node_modules`, `.expo`, native `ios`/`android` build folders, env files, build artifacts, installed skills, and OS/editor cruft.                                                                          |
+| File                                   | Purpose                                                                                                                                                                                                                                                   |
+| -------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `app.json`                             | Expo app manifest: app name/slug/version, icon & splash screen, iOS/Android/Web platform config, plugins (`expo-router`, `expo-splash-screen`, `expo-font`, `@clerk/expo`, `expo-secure-store`), and experimental flags (`typedRoutes`, `reactCompiler`). |
+| `babel.config.js`                      | Babel presets: `babel-preset-expo` (with NativeWind's JSX import source) and `nativewind/babel`.                                                                                                                                                          |
+| `metro.config.js`                      | Extends Expo's default Metro config with NativeWind, using `global.css` as the Tailwind CSS entry point.                                                                                                                                                  |
+| `tailwind.config.js`                   | Tailwind theme configuration — content paths, extended color palette, spacing scale, border radius, font family tokens.                                                                                                                                   |
+| `tsconfig.json`                        | Extends `expo/tsconfig.base`; strict type-checking; `@/*` path alias resolving to the project root.                                                                                                                                                       |
+| `eslint.config.js`                     | Flat ESLint config built on `eslint-config-expo`; ignores `dist/*`.                                                                                                                                                                                       |
+| `.prettierrc.json` / `.prettierignore` | Prettier formatting rules plus `prettier-plugin-tailwindcss` for class-name sorting; ignore list for generated/vendor files.                                                                                                                              |
+| `.vscode/settings.json`                | Enables format-on-save code actions: fix-all, organize imports, sort members.                                                                                                                                                                             |
+| `.vscode/extensions.json`              | Recommends the Expo VS Code extension.                                                                                                                                                                                                                    |
+| `skills-lock.json`                     | Lockfile for Clerk skills installed via `npx skills add` into `.agents/skills/` and `.claude/skills/` (both git-ignored).                                                                                                                                 |
+| `.gitignore`                           | Excludes `node_modules`, `.expo`, native `ios`/`android` build folders, env files, build artifacts, installed skills, and OS/editor cruft.                                                                                                                |
 
 ## Type Declarations
 
@@ -294,7 +294,7 @@ graph LR
 ### Why we use it
 
 - **Catches errors at compile time instead of runtime.** In a mobile app, a runtime crash from `undefined.price` means a bad build shipped to a device/store — TypeScript turns that into a red squiggle in the editor before it's ever run.
-- **Self-documenting code.** `type.d.ts`'s `Subscription` interface tells you exactly what shape a subscription has without hunting through `constants/data.ts` — the type *is* the contract.
+- **Self-documenting code.** `type.d.ts`'s `Subscription` interface tells you exactly what shape a subscription has without hunting through `constants/data.ts` — the type _is_ the contract.
 - **Safe refactoring.** Rename a `Subscription` field and every usage that breaks lights up immediately, across components, screens, and mock data — instead of discovering it at runtime on one specific screen.
 - **Editor tooling / DX.** Autocomplete, inline docs, and "go to definition" all depend on the type checker knowing what's in scope.
 
@@ -319,7 +319,7 @@ graph LR
 - **Utility types** (`Partial<T>`, `Required<T>`, `Pick<T, K>`, `Omit<T, K>`, `Record<K, V>`, `ReturnType<T>`) derive new types from existing ones instead of hand-duplicating shapes — this project already leans on `Omit` for prop types.
 - **`readonly` and `as const`** signal (and enforce) immutability where a value shouldn't be reassigned or mutated — cheap correctness win, especially for config/constants objects.
 - **Avoid `enum` by default; prefer union literal types** (`'pending' | 'active' | 'cancelled'`) — string literal unions are structurally simpler, tree-shake better, and avoid `enum`'s reverse-mapping quirks. Use `const enum`/`enum` only when you specifically need the enum semantics.
-- **`satisfies` operator** (TS 4.9+) checks a value against a type without widening its inferred type the way an explicit annotation would — useful when you want both validation *and* the narrowest inferred type.
+- **`satisfies` operator** (TS 4.9+) checks a value against a type without widening its inferred type the way an explicit annotation would — useful when you want both validation _and_ the narrowest inferred type.
 - **Generics for reusable logic**, not for its own sake — a generic `function first<T>(arr: T[]): T | undefined` is worth it; a generic wrapper with one call site usually isn't.
 - **Structural typing, not nominal.** TypeScript compares shapes, not names — two differently-named interfaces with identical fields are interchangeable. This trips up people coming from Java/C#/nominally-typed languages and is a common interview talking point.
 - **Don't over-type.** Let inference do the work for local variables and simple returns; reserve explicit annotations for function signatures (parameters + return types) and exported/public APIs, where the contract needs to be pinned down.

@@ -1,13 +1,21 @@
 import AuthButton from '@/components/AuthButton';
 import AuthTextField from '@/components/AuthTextField';
-import { icons } from '@/constants/icons';
 import { APP_NAME, PASSWORD_MIN_LENGTH, RESEND_COOLDOWN_SECONDS } from '@/constants/auth';
+import { icons } from '@/constants/icons';
 import { isValidEmail, isValidPassword } from '@/lib/utlis';
 import { useSignIn } from '@clerk/expo';
-import clsx from 'clsx';
+import { clsx } from 'clsx';
 import { Link, router } from 'expo-router';
 import React, { useEffect, useRef, useState } from 'react';
-import { Image, KeyboardAvoidingView, Platform, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import {
+    Image,
+    KeyboardAvoidingView,
+    Platform,
+    ScrollView,
+    Text,
+    TouchableOpacity,
+    View,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 type Phase = 'request' | 'verify' | 'reset';
@@ -144,7 +152,11 @@ const ForgotPassword = () => {
                     keyboardShouldPersistTaps="handled"
                     showsVerticalScrollIndicator={false}>
                     <TouchableOpacity className="auth-back-button" onPress={handleBack} hitSlop={8}>
-                        <Image source={icons.back} className="auth-back-icon" resizeMode="contain" />
+                        <Image
+                            source={icons.back}
+                            className="auth-back-icon"
+                            resizeMode="contain"
+                        />
                     </TouchableOpacity>
 
                     <View className="auth-brand-block">
@@ -152,8 +164,8 @@ const ForgotPassword = () => {
                             <>
                                 <Text className="auth-title">Reset your password</Text>
                                 <Text className="auth-subtitle">
-                                    Enter the email for your {APP_NAME} account and we&apos;ll send you a
-                                    reset code
+                                    Enter the email for your {APP_NAME} account and we&apos;ll send
+                                    you a reset code
                                 </Text>
                             </>
                         )}
@@ -232,12 +244,16 @@ const ForgotPassword = () => {
                                         loading={isSubmitting}
                                     />
                                     <View className="auth-resend-row">
-                                        <Text className="auth-link-copy">Didn&apos;t get a code?</Text>
+                                        <Text className="auth-link-copy">
+                                            Didn&apos;t get a code?
+                                        </Text>
                                         <Text
                                             className="auth-link"
                                             onPress={handleResend}
                                             suppressHighlighting={resendCooldown > 0}>
-                                            {resendCooldown > 0 ? `Resend in ${resendCooldown}s` : 'Resend'}
+                                            {resendCooldown > 0
+                                                ? `Resend in ${resendCooldown}s`
+                                                : 'Resend'}
                                         </Text>
                                     </View>
                                 </>
@@ -263,7 +279,9 @@ const ForgotPassword = () => {
                                     <Text
                                         className={clsx(
                                             'auth-helper',
-                                            newPassword.length > 0 && passwordIsLongEnough && 'text-success'
+                                            newPassword.length > 0 &&
+                                                passwordIsLongEnough &&
+                                                'text-success'
                                         )}>
                                         At least {PASSWORD_MIN_LENGTH} characters
                                     </Text>
@@ -279,7 +297,8 @@ const ForgotPassword = () => {
                                         returnKeyType="go"
                                         onSubmitEditing={handleResetPassword}
                                         error={
-                                            confirmPassword.length > 0 && confirmPassword !== newPassword
+                                            confirmPassword.length > 0 &&
+                                            confirmPassword !== newPassword
                                                 ? 'Passwords do not match'
                                                 : null
                                         }
