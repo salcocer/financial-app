@@ -8,11 +8,11 @@ const Settings = () => {
     const { signOut } = useAuth();
     const { user } = useUser();
 
-    const initial = (
-        user?.firstName?.charAt(0) ??
-        user?.primaryEmailAddress?.emailAddress?.charAt(0) ??
-        '?'
-    ).toUpperCase();
+    // const initial = (
+    //     user?.firstName?.charAt(0) ??
+    //     user?.primaryEmailAddress?.emailAddress?.charAt(0) ??
+    //     '?'
+    // ).toUpperCase();
     const displayName = user?.fullName || user?.primaryEmailAddress?.emailAddress || 'Account';
 
     const handleSignOut = async () => {
