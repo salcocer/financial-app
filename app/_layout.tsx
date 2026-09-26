@@ -1,3 +1,4 @@
+import UserProfileSync from '@/components/UserProfileSync';
 import { ClerkProvider } from '@clerk/expo';
 import { tokenCache } from '@clerk/expo/token-cache';
 import '@/global.css';
@@ -35,6 +36,7 @@ export default function RootLayout() {
 
     return (
         <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
+            <UserProfileSync />
             <Stack screenOptions={{ headerShown: false }} />
         </ClerkProvider>
     );
