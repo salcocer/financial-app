@@ -8,14 +8,16 @@ import { useUserStore } from '@/lib/store/userStore';
 import { formatCurrency } from '@/lib/utlis';
 import dayjs from 'dayjs';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { FlatList, Image, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function App() {
+    const { t } = useTranslation();
     const [expandedSubscriptionId, setExpandedSubscriptionId] = useState<string | null>(null);
     const username = useUserStore(state => state.username);
     const imageUrl = useUserStore(state => state.imageUrl);
-    const displayName = username || 'there';
+    const displayName = username || t('home.defaultGreetingName');
 
     return (
         <SafeAreaView className="flex-1 bg-background  p-5">
@@ -34,7 +36,7 @@ export default function App() {
                         </View>
 
                         <View className="home-balance-card">
-                            <Text className="home-balance-label">Balance</Text>
+                            <Text className="home-balance-label">{t('home.balanceLabel')}</Text>
                             <View className="home-balance-row">
                                 <Text className="home-balance-amount">
                                     {formatCurrency(HOME_BALANCE.amount)}
@@ -46,7 +48,7 @@ export default function App() {
                         </View>
 
                         <View className="mb-5">
-                            <ListHeading title="Upcoming" />
+                            <ListHeading title={t('home.upcomingSectionTitle')} />
                             <FlatList
                                 horizontal
                                 data={UPCOMING_SUBSCRIPTIONS}
@@ -55,13 +57,13 @@ export default function App() {
                                 showsHorizontalScrollIndicator={false}
                                 ListEmptyComponent={() => (
                                     <Text className="text-center text-gray-500">
-                                        No upcoming subscriptions
+                                        {t('home.noUpcomingSubscriptions')}
                                     </Text>
                                 )}
                             />
                         </View>
 
-                        <ListHeading title="All Subscriptions" />
+                        <ListHeading title={t('home.allSubscriptionsSectionTitle')} />
                     </>
                 )}
                 data={HOME_SUBSCRIPTIONS}
@@ -71,7 +73,9 @@ export default function App() {
                 contentContainerClassName="pb-20"
                 ItemSeparatorComponent={() => <View className="h-2" />} // Add spacing between items
                 ListEmptyComponent={() => (
-                    <Text className="text-center text-gray-500">No subscriptions</Text>
+                    <Text className="text-center text-gray-500">
+                        {t('home.noSubscriptions')}
+                    </Text>
                 )}
                 renderItem={({ item }) => (
                     <SubscriptionCard

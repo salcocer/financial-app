@@ -2,6 +2,7 @@ import UserProfileSync from '@/components/UserProfileSync';
 import { ClerkProvider } from '@clerk/expo';
 import { tokenCache } from '@clerk/expo/token-cache';
 import '@/global.css';
+import '@/lib/i18n';
 import { useFonts } from 'expo-font';
 import { SplashScreen, Stack } from 'expo-router';
 import React, { useEffect } from 'react';

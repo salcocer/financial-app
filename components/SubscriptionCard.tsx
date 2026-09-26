@@ -1,6 +1,7 @@
 import { formatCurrency, formatStatusLabel, formatSubscriptionDateTime } from '@/lib/utlis';
 import { clsx } from 'clsx';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Image, Pressable, Text, View } from 'react-native';
 import Animated, { FadeIn, FadeOut, LinearTransition } from 'react-native-reanimated';
 
@@ -22,6 +23,7 @@ const SubscriptionCard = ({
     startDate,
     status,
 }: SubscriptionCardProps) => {
+    const { t } = useTranslation();
     return (
         <AnimatedPressable
             layout={LinearTransition.duration(250)}
@@ -56,31 +58,31 @@ const SubscriptionCard = ({
                     className="sub-bdy">
                     <View className="sub-detail">
                         <View className="sub-row">
-                            <Text className="sub-label">Payment: </Text>
+                            <Text className="sub-label">{t('subscriptionCard.payment')} </Text>
                             <Text className="sub-value" numberOfLines={1} ellipsizeMode="tail">
                                 {paymentMethod?.trim()}
                             </Text>
                         </View>
                         <View className="sub-row">
-                            <Text className="sub-label">Category: </Text>
+                            <Text className="sub-label">{t('subscriptionCard.category')} </Text>
                             <Text className="sub-value" numberOfLines={1} ellipsizeMode="tail">
                                 {category?.trim() || plan?.trim()}
                             </Text>
                         </View>
                         <View className="sub-row">
-                            <Text className="sub-label">Started: </Text>
+                            <Text className="sub-label">{t('subscriptionCard.started')} </Text>
                             <Text className="sub-value" numberOfLines={1} ellipsizeMode="tail">
                                 {startDate ? formatSubscriptionDateTime(startDate) : ''}
                             </Text>
                         </View>
                         <View className="sub-row">
-                            <Text className="sub-label">Renewal: </Text>
+                            <Text className="sub-label">{t('subscriptionCard.renewal')} </Text>
                             <Text className="sub-value" numberOfLines={1} ellipsizeMode="tail">
                                 {renewalDate ? formatSubscriptionDateTime(renewalDate) : ''}
                             </Text>
                         </View>
                         <View className="sub-row">
-                            <Text className="sub-label">Status: </Text>
+                            <Text className="sub-label">{t('subscriptionCard.status')} </Text>
                             <Text className="sub-value" numberOfLines={1} ellipsizeMode="tail">
                                 {status ? formatStatusLabel(status) : ''}
                             </Text>
