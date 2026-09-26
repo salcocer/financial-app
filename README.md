@@ -399,3 +399,88 @@ classDiagram
 - `onboarding.tsx` is unrouted from the rest of the app (nothing links to `/onboarding`) and contains inline developer notes on Expo Router concepts rather than real UI.
 - Subscription/user data is hardcoded in `constants/data.ts` — there is no API client or persistence layer.
 - Social/OAuth sign-in is not wired up; only Clerk's email + password strategy is used.
+
+# Claude Chat Resume
+
+## 1 Translation
+
+i18next + react-18next + expo-localization to read the device's current locale.
+This is the standard combo for expo/rn.
+
+## 2 Global + local storage for name & picture
+
+This is two different concerns:
+
+- Global (in-memory) state - the current name/picture as far as the running app is concerned. Something like a Context Provider or a small store Zustand is a common lightweight choice. So if you change your name in Settings, the avatar in the header updates immediately everywhere, without a screen re-fetch.
+
+- Local (persisted) storage - what survives an app restart. Two different tools for two different kinds of data:
+    - The name -> AsyncStorage (react-native-async-storage/async-storage)
+    - The picture -> is a binary file, not something you want to shove into AsyncStorage as base64. The right pattern is 'expo-image-picker' to let the user choose/take a photo, then 'expo-file-system' to copy that image into the app's own document directory.
+      (The picker's original URI can be temp file that disappears), and you store just the resulting 'file path string' in AsyncStorage state - not the bytes themselves.
+
+/lib/store/userStore.ts
+
+```
+inteface UserProfile{
+    username: string | null;
+    imageUrl: string | null;
+}
+
+interface UserStore extends UserProfile{
+    hasHydrated: boolean;
+    setUser: (profile: UserProfile) => void;
+    clearUser: () => void;
+    setHasHydrated: (hasHydrated: boolean) => void;
+}
+```
+
+UserProfile is just the data - the two fields that actually get saved to disk.
+
+UserStore is the full shape of the store as components will see it.
+
+UserStore it extends UserProfile ( interface extension, so it inherits username/imageUrl).
+
+And add the runtime-only flag 'hasHydrated' plus the three actions functions.
+
+The Store Creation Call
+
+```
+export const useUserStore = create<UserStore>()(
+    persist(
+        set => ({...}),
+        {...}
+    )
+)
+```
+
+The STATE Creator function
+
+```
+set => ({
+    username: null,
+    imageUrl: null,
+    hasHydrated: false,
+    setUser: profile => set(profile),
+    clearUser: () => set({ username: null, imageUrl: null}),
+    setHasHydrated: hasHydrated => set({ hasHydrated })
+})
+```
+
+`set` is a function zustand injects for you - calling it merges whatever object you
+pass into the current state.
+
+`onRehydrateStorage` is the trickiest part. It's a function that zustand calls once,
+right when rehydration starts - and whatever that function returns is itself called once
+rehydration finishes.
+
+So () => state => { state?.setHasHydrated(true) } reads as
+
+when hydration starts, hand back this other function;
+when hydration finishes, call it with the now-populated store;
+
+Full cicle:
+
+1. app cold start.
+2. `hasHydrated`=false. its never persisted as true, every fresh app launch starts false.
+3. `persist` kicks off an async read the `user-storage`. when that resolves, it merges that saved {username, imageUrl} into the store.
+4. `onRehydratedStorage` returned callback fires filiping `hasHydrated`=true. That flag is the signal the rest of the app watches for "local storage has been checked".
