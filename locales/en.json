@@ -1,0 +1,39 @@
+{
+    "settings": {
+        "title": "Settings",
+        "signOut": "Sign Out",
+        "defaultAccountName": "Account"
+    },
+    "home": {
+        "defaultGreetingName": "there",
+        "balanceLabel": "Balance",
+        "upcomingSectionTitle": "Upcoming",
+        "allSubscriptionsSectionTitle": "All Subscriptions",
+        "noUpcomingSubscriptions": "No upcoming subscriptions",
+        "noSubscriptions": "No subscriptions"
+    },
+    "list": {
+        "seeAll": "See All"
+    },
+    "subscriptionCard": {
+        "payment": "Payment:",
+        "category": "Category:",
+        "started": "Started:",
+        "renewal": "Renewal:",
+        "status": "Status:"
+    },
+    "upcomingCard": {
+        "daysLeft": "{{count}} days left",
+        "lastDay": "Last day"
+    },
+    "insights": {
+        "title": "Insights"
+    },
+    "subscriptions": {
+        "title": "Subscriptions"
+    },
+    "subscriptionDetail": {
+        "title": "Subscription Details",
+        "goBack": "Go Back"
+    }
+}

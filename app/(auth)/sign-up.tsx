@@ -137,12 +137,14 @@ const SignUp = () => {
         <SafeAreaView className="auth-safe-area" edges={['top', 'bottom']}>
             <KeyboardAvoidingView
                 className="auth-screen"
-                behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+                behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+            >
                 <ScrollView
                     className="auth-scroll"
                     contentContainerClassName="auth-content"
                     keyboardShouldPersistTaps="handled"
-                    showsVerticalScrollIndicator={false}>
+                    showsVerticalScrollIndicator={false}
+                >
                     <View className="auth-brand-block">
                         <View className="auth-logo-wrap">
                             <View className="auth-logo-mark">
@@ -222,7 +224,8 @@ const SignUp = () => {
                                             password.length > 0 &&
                                                 passwordIsLongEnough &&
                                                 'text-success'
-                                        )}>
+                                        )}
+                                    >
                                         At least {PASSWORD_MIN_LENGTH} characters
                                     </Text>
 
@@ -280,7 +283,8 @@ const SignUp = () => {
                                         <Text
                                             className="auth-link"
                                             onPress={handleResend}
-                                            suppressHighlighting={resendCooldown > 0}>
+                                            suppressHighlighting={resendCooldown > 0}
+                                        >
                                             {resendCooldown > 0
                                                 ? `Resend in ${resendCooldown}s`
                                                 : 'Resend'}
@@ -289,7 +293,8 @@ const SignUp = () => {
 
                                     <Text
                                         className="auth-link text-center"
-                                        onPress={handleChangeEmail}>
+                                        onPress={handleChangeEmail}
+                                    >
                                         Use a different email
                                     </Text>
                                 </>

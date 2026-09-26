@@ -2,17 +2,20 @@ import images from '@/constants/images';
 import { useUserStore } from '@/lib/store/userStore';
 import { useAuth, useUser } from '@clerk/expo';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const Settings = () => {
+    const { t } = useTranslation();
     const { signOut } = useAuth();
     const { user } = useUser();
     const username = useUserStore(state => state.username);
     const imageUrl = useUserStore(state => state.imageUrl);
     const clearUser = useUserStore(state => state.clearUser);
 
-    const displayName = username || user?.primaryEmailAddress?.emailAddress || 'Account';
+    const displayName =
+        username || user?.primaryEmailAddress?.emailAddress || t('settings.defaultAccountName');
 
     const handleSignOut = async () => {
         await signOut();
@@ -21,7 +24,7 @@ const Settings = () => {
 
     return (
         <SafeAreaView className="flex-1 bg-background p-5">
-            <Text className="list-title mb-5">Settings</Text>
+            <Text className="list-title mb-5">{t('settings.title')}</Text>
 
             <View className="settings-user-card">
                 <View className="settings-user-avatar">
@@ -47,7 +50,7 @@ const Settings = () => {
                 onPress={handleSignOut}
                 activeOpacity={0.85}
             >
-                <Text className="settings-signout-text">Sign Out</Text>
+                <Text className="settings-signout-text">{t('settings.signOut')}</Text>
             </TouchableOpacity>
         </SafeAreaView>
     );

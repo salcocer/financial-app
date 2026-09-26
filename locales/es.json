@@ -1,0 +1,39 @@
+{
+    "settings": {
+        "title": "Ajustes",
+        "signOut": "Cerrar sesión",
+        "defaultAccountName": "Cuenta"
+    },
+    "home": {
+        "defaultGreetingName": "amigo",
+        "balanceLabel": "Balance",
+        "upcomingSectionTitle": "Próximos",
+        "allSubscriptionsSectionTitle": "Todas las suscripciones",
+        "noUpcomingSubscriptions": "No hay próximas suscripciones",
+        "noSubscriptions": "No hay suscripciones"
+    },
+    "list": {
+        "seeAll": "Ver todo"
+    },
+    "subscriptionCard": {
+        "payment": "Pago:",
+        "category": "Categoría:",
+        "started": "Inicio:",
+        "renewal": "Renovación:",
+        "status": "Estado:"
+    },
+    "upcomingCard": {
+        "daysLeft": "Quedan {{count}} días",
+        "lastDay": "Último día"
+    },
+    "insights": {
+        "title": "Resumen"
+    },
+    "subscriptions": {
+        "title": "Suscripciones"
+    },
+    "subscriptionDetail": {
+        "title": "Detalles de la suscripción",
+        "goBack": "Regresar"
+    }
+}
