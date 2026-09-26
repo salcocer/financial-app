@@ -29,7 +29,8 @@ const SubscriptionCard = ({
             layout={LinearTransition.duration(250)}
             onPress={onPress}
             className={clsx('sub-card', expanded ? 'sub-card-expanded' : 'bg-card')}
-            style={!expanded && color ? { backgroundColor: color } : undefined}>
+            style={!expanded && color ? { backgroundColor: color } : undefined}
+        >
             <View className="sub-head">
                 <View className="sub-main">
                     <Image source={icon} className="sub-icon" />
@@ -55,7 +56,8 @@ const SubscriptionCard = ({
                 <Animated.View
                     entering={FadeIn.duration(200)}
                     exiting={FadeOut.duration(150)}
-                    className="sub-bdy">
+                    className="sub-bdy"
+                >
                     <View className="sub-detail">
                         <View className="sub-row">
                             <Text className="sub-label">{t('subscriptionCard.payment')} </Text>

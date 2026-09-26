@@ -145,12 +145,14 @@ const ForgotPassword = () => {
         <SafeAreaView className="auth-safe-area" edges={['top', 'bottom']}>
             <KeyboardAvoidingView
                 className="auth-screen"
-                behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+                behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+            >
                 <ScrollView
                     className="auth-scroll"
                     contentContainerClassName="auth-content"
                     keyboardShouldPersistTaps="handled"
-                    showsVerticalScrollIndicator={false}>
+                    showsVerticalScrollIndicator={false}
+                >
                     <TouchableOpacity className="auth-back-button" onPress={handleBack} hitSlop={8}>
                         <Image
                             source={icons.back}
@@ -250,7 +252,8 @@ const ForgotPassword = () => {
                                         <Text
                                             className="auth-link"
                                             onPress={handleResend}
-                                            suppressHighlighting={resendCooldown > 0}>
+                                            suppressHighlighting={resendCooldown > 0}
+                                        >
                                             {resendCooldown > 0
                                                 ? `Resend in ${resendCooldown}s`
                                                 : 'Resend'}
@@ -282,7 +285,8 @@ const ForgotPassword = () => {
                                             newPassword.length > 0 &&
                                                 passwordIsLongEnough &&
                                                 'text-success'
-                                        )}>
+                                        )}
+                                    >
                                         At least {PASSWORD_MIN_LENGTH} characters
                                     </Text>
 

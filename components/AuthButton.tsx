@@ -11,7 +11,8 @@ const AuthButton = ({ label, onPress, loading, disabled }: AuthButtonProps) => {
             className={clsx('auth-button', isDisabled && 'auth-button-disabled')}
             onPress={onPress}
             disabled={isDisabled}
-            activeOpacity={0.85}>
+            activeOpacity={0.85}
+        >
             {loading ? (
                 <ActivityIndicator color={colors.primary} />
             ) : (

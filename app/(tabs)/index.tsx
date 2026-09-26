@@ -73,9 +73,7 @@ export default function App() {
                 contentContainerClassName="pb-20"
                 ItemSeparatorComponent={() => <View className="h-2" />} // Add spacing between items
                 ListEmptyComponent={() => (
-                    <Text className="text-center text-gray-500">
-                        {t('home.noSubscriptions')}
-                    </Text>
+                    <Text className="text-center text-gray-500">{t('home.noSubscriptions')}</Text>
                 )}
                 renderItem={({ item }) => (
                     <SubscriptionCard
