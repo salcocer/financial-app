@@ -5,7 +5,7 @@
         "version": "1.0.0",
         "orientation": "portrait",
         "icon": "./assets/icons/logo.png",
-        "scheme": "helloworld",
+        "scheme": "finly",
         "userInterfaceStyle": "automatic",
         "newArchEnabled": true,
         "ios": {
@@ -59,7 +59,8 @@
             ],
             "@clerk/expo",
             "expo-secure-store",
-            "expo-localization"
+            "expo-localization",
+            "expo-notifications"
         ],
         "experiments": {
             "typedRoutes": true,

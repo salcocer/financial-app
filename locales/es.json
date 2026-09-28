@@ -30,7 +30,8 @@
         "title": "Resumen"
     },
     "subscriptions": {
-        "title": "Suscripciones"
+        "title": "Suscripciones",
+        "sendNotification": "Enviar notificación"
     },
     "subscriptionDetail": {
         "title": "Detalles de la suscripción",
