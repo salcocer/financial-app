@@ -55,13 +55,35 @@
                     ]
                 }
             ],
-            "@clerk/expo",
+            [
+                "@clerk/expo",
+                {
+                    "appleSignIn": false
+                }
+            ],
             "expo-secure-store",
             "expo-localization",
             "expo-notifications",
             "expo-image",
             "expo-status-bar",
-            "expo-web-browser"
+            "expo-web-browser",
+            [
+                "expo-widgets",
+                {
+                    "bundleIdentifier": "com.salcocer.finly.ExpoWidgetsTarget",
+                    "groupIdentifier": "group.com.salcocer.finly",
+                    "widgets": [
+                        {
+                            "name": "BalanceWidget",
+                            "displayName": "Balance",
+                            "description": "Your current Finly balance.",
+                            "ios": {
+                                "supportedFamilies": ["systemSmall"]
+                            }
+                        }
+                    ]
+                }
+            ]
         ],
         "experiments": {
             "typedRoutes": true,

@@ -6,8 +6,9 @@ import { icons } from '@/constants/icons';
 import images from '@/constants/images';
 import { useUserStore } from '@/lib/store/userStore';
 import { formatCurrency } from '@/lib/utlis';
+import BalanceWidget from '@/widgets/BalanceWidget';
 import dayjs from 'dayjs';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FlatList, Image, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -18,6 +19,14 @@ export default function App() {
     const username = useUserStore(state => state.username);
     const imageUrl = useUserStore(state => state.imageUrl);
     const displayName = username || t('home.defaultGreetingName');
+
+    // Keep the home screen widget in sync with the balance shown here
+    useEffect(() => {
+        BalanceWidget.updateSnapshot({
+            label: t('home.balanceLabel'),
+            amount: formatCurrency(HOME_BALANCE.amount),
+        });
+    }, [t]);
 
     return (
         <SafeAreaView className="flex-1 bg-background  p-5">
