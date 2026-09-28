@@ -7,7 +7,6 @@
         "icon": "./assets/icons/logo.png",
         "scheme": "finly",
         "userInterfaceStyle": "automatic",
-        "newArchEnabled": true,
         "ios": {
             "bundleIdentifier": "com.salcocer.finly",
             "supportsTablet": true,
@@ -23,7 +22,6 @@
                 "backgroundImage": "./assets/images/android-icon-background.png",
                 "monochromeImage": "./assets/images/android-icon-monochrome.png"
             },
-            "edgeToEdgeEnabled": true,
             "predictiveBackGestureEnabled": false
         },
         "web": {
@@ -60,7 +58,10 @@
             "@clerk/expo",
             "expo-secure-store",
             "expo-localization",
-            "expo-notifications"
+            "expo-notifications",
+            "expo-image",
+            "expo-status-bar",
+            "expo-web-browser"
         ],
         "experiments": {
             "typedRoutes": true,
