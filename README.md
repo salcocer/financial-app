@@ -6,19 +6,21 @@ A mobile app built with [Expo](https://expo.dev) and [Expo Router](https://docs.
 
 ## Tech Stack
 
-| Area                | Technology                                                                      |
-| ------------------- | ------------------------------------------------------------------------------- |
-| Framework           | [Expo](https://expo.dev) `~54.0.36` (New Architecture enabled)                  |
-| Runtime             | React `19.1.0`, React Native `0.81.5`                                           |
-| Routing             | Expo Router `~6.0.24` (file-based, typed routes)                                |
-| Navigation          | React Navigation (bottom tabs + native stack, via Expo Router)                  |
-| Authentication      | [Clerk](https://clerk.com/) (`@clerk/expo`) — email/password, email-code verify |
-| Styling             | NativeWind `^4.2.7` + Tailwind CSS `^3.4.19`                                    |
-| Language            | TypeScript `~5.9.2` (strict mode)                                               |
-| Animations/Gestures | react-native-reanimated, react-native-gesture-handler, react-native-worklets    |
-| Linting/Formatting  | ESLint `^9.25.0` (`eslint-config-expo`, flat config) + Prettier `^3.9.8`        |
-| Date formatting     | [dayjs](https://day.js.org/) (used in `lib/utlis.ts`)                           |
-| Class merging       | [clsx](https://github.com/lukeed/clsx) (conditional NativeWind class strings)   |
+| Area                | Technology                                                                                                                                           |
+| ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Framework           | [Expo](https://expo.dev) SDK 57 (`expo ^57.0.0`; New Architecture is always on since SDK 55)                                                         |
+| Runtime             | React `19.2.3`, React Native `0.86.3`                                                                                                                |
+| Routing             | Expo Router `~57.0.23` (file-based, typed routes)                                                                                                    |
+| Navigation          | Expo Router's own `Stack` and `Tabs` (since SDK 56 it no longer depends on `@react-navigation/*`)                                                    |
+| Authentication      | [Clerk](https://clerk.com/) (`@clerk/expo`) — email/password, email-code verify                                                                      |
+| Styling             | NativeWind `^4.2.7` + Tailwind CSS `^3.4.19`                                                                                                         |
+| Language            | TypeScript `~6.0.3` (strict mode)                                                                                                                    |
+| Home screen widget  | [expo-widgets](https://docs.expo.dev/versions/latest/sdk/widgets/) `~57.0.21` + `@expo/ui` `~57.0.20` (SwiftUI components written in JSX) — iOS only |
+| Dev builds          | `expo-dev-client` `~57.0.19` — the app runs as a development build, not in Expo Go                                                                   |
+| Animations/Gestures | react-native-reanimated, react-native-gesture-handler, react-native-worklets                                                                         |
+| Linting/Formatting  | ESLint `^9.25.0` (`eslint-config-expo`, flat config) + Prettier `^3.9.8`                                                                             |
+| Date formatting     | [dayjs](https://day.js.org/) (used in `lib/utlis.ts`)                                                                                                |
+| Class merging       | [clsx](https://github.com/lukeed/clsx) (conditional NativeWind class strings)                                                                        |
 
 There is no charting/graphing library in `package.json` yet (no Victory, react-native-svg-charts, d3, etc.) — the **Insights** tab (`app/(tabs)/insights.tsx`) is a placeholder screen, so spending charts/graphs are not implemented yet. The diagrams in this README are architecture/flow diagrams (Mermaid), not app UI.
 
@@ -26,7 +28,7 @@ There is no charting/graphing library in `package.json` yet (no Victory, react-n
 
 - Node.js and npm
 - A [Clerk](https://clerk.com/) application, with `EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY` available (see [Environment Variables](#environment-variables))
-- Expo Go app (for testing on a physical device) or an iOS/Android simulator
+- **A development build, not Expo Go.** The app includes native code that Expo Go doesn't have (the `expo-widgets` [home screen widget](#home-screen-widget-ios)), so it runs as its own development build (`expo-dev-client`). For iOS you need Xcode and CocoaPods (`pod` must be on your `PATH`) plus an iOS simulator.
 
 ## Getting Started
 
@@ -40,6 +42,8 @@ npm run lint          # run ESLint via `expo lint`
 npm run format         # write Prettier formatting
 npm run format:check    # check Prettier formatting without writing
 ```
+
+The first `npm run ios` (`expo run:ios`) generates the native `ios/` project (git-ignored), installs the pods, builds the app together with its widget extension, and installs it on the simulator. After that, `npm run start` is enough for JavaScript changes — press `i` to open the development build. When you add a package with native code or change the plugins in `app.json`, regenerate the native project with `npx expo prebuild --platform ios` (it wipes and recreates `ios/`) and then run `npm run ios` again — `npm run ios` on its own only generates `ios/` when the folder doesn't exist yet.
 
 There is no test script configured in `package.json`.
 
@@ -98,6 +102,9 @@ financial-app/
 ├── lib/
 │   └── utlis.ts                    # formatCurrency, formatSubscriptionDateTime, formatStatusLabel,
 │                                    # isValidEmail, isValidPassword
+│
+├── widgets/
+│   └── BalanceWidget.tsx            # iOS home screen widget (expo-widgets) showing the current balance
 │
 ├── global.css                       # Tailwind directives + `@layer components` classes (tabs, home, cards,
 │                                     # auth forms, settings, modals, pickers, category chips)
@@ -239,6 +246,78 @@ stateDiagram-v2
 
 Sign-up also mounts a `<View nativeID="clerk-captcha" />` — the required anchor for Clerk's bot-protection captcha.
 
+## Home Screen Widget (iOS)
+
+Finly has a small iOS home screen widget that shows the user's current balance. It's built with [`expo-widgets`](https://docs.expo.dev/versions/latest/sdk/widgets/) and [`@expo/ui`](https://docs.expo.dev/versions/latest/sdk/ui/): the widget is written in JSX using `@expo/ui`'s SwiftUI components, and iOS renders it as a real WidgetKit widget. For now it shows the mock `HOME_BALANCE` from `constants/data.ts` — the same number as the balance card on Home.
+
+| File                        | Role                                                                                                                        |
+| --------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| `widgets/BalanceWidget.tsx` | The widget's layout (marked with the `'widget'` directive) and `createWidget('BalanceWidget', …)`                           |
+| `app/(tabs)/index.tsx`      | Sends the formatted balance and the translated label to the widget with `BalanceWidget.updateSnapshot(...)`                 |
+| `app/(tabs)/settings.tsx`   | Clears the widget on sign-out (`updateSnapshot({})`), so the balance doesn't stay on the home screen                        |
+| `app.json`                  | `expo-widgets` config plugin — registers `BalanceWidget` ("Balance", small size), the widget's bundle ID, and the App Group |
+
+### How it works
+
+A widget isn't part of the running app. iOS runs it as a separate **widget extension** (`ExpoWidgetsTarget`) in its own process, even when Finly is closed — so it can't read the app's state, the Zustand store, or AsyncStorage. The app and the widget share data through an **App Group** (`group.com.salcocer.finly`), a storage area both of them can read and write.
+
+1. **Build time** — when the native project is generated (`npx expo prebuild`, which `npm run ios` runs automatically the first time), the `expo-widgets` config plugin adds the `ExpoWidgetsTarget` extension to the Xcode project and gives the app and the extension the App Group.
+2. **Compile time** — when `expo-widgets` is installed, `babel-preset-expo` finds functions marked with the `'widget'` directive and replaces them with **a string of their own source code**. That string is what gets handed to the native side.
+3. **Registering the layout** — importing `widgets/BalanceWidget.tsx` runs `createWidget('BalanceWidget', …)`, which saves that layout string into the App Group.
+4. **Sending data** — Home formats the balance with `formatCurrency` and calls `BalanceWidget.updateSnapshot({ label, amount })`. The props are saved to the App Group and iOS is told to refresh the widget.
+5. **Drawing** — the extension reads the layout and the props, runs the layout in a small JavaScript runtime where `@expo/ui`'s components and modifiers are available as globals, and turns the result into SwiftUI views.
+
+```mermaid
+sequenceDiagram
+    participant Home as Home screen (app)
+    participant Module as widgets/BalanceWidget.tsx
+    participant Group as App Group (group.com.salcocer.finly)
+    participant Ext as Widget extension (ExpoWidgetsTarget)
+
+    Module->>Group: createWidget() saves the layout string
+    Home->>Group: updateSnapshot({ label, amount })
+    Group-->>Ext: iOS reloads the widget
+    Ext->>Group: read layout + props
+    Ext->>Ext: run layout(props) → SwiftUI views on the home screen
+```
+
+### Rules for widget code
+
+Because the layout is turned into a string and run inside the extension, code under `'widget'` has strict rules:
+
+- **Only `@expo/ui` components and modifiers** (`VStack`, `Text`, `Spacer`, `font`, `foregroundStyle`, …), imported by their plain names from `@expo/ui/swift-ui` and `@expo/ui/swift-ui/modifiers`. No React Native components, no NativeWind `className`, no renamed imports.
+- **No hooks, no app imports, nothing declared outside the function** — no `useTranslation`, no `formatCurrency`, no `HOME_BALANCE`, not even a top-level color constant. Everything is written inside the function or arrives through props.
+- **Prepare data in the app.** That's why Home sends a ready-to-show string (`"$2,489.48"`) and a translated label (`t('home.balanceLabel')`) instead of the raw number.
+- **System font.** The Plus Jakarta Sans files are only bundled with the app, not with the extension, so the widget uses the iOS system font (rounded design).
+- **Handle missing props.** Before the app has sent anything, the widget shows `Finly` and `—`.
+
+### Seeing it on the simulator
+
+1. Build and install the development build: `npm run ios` (see [Prerequisites](#prerequisites)).
+2. Sign in and open **Home** — this registers the widget and sends the balance.
+3. Go to the home screen (<kbd>Cmd</kbd>+<kbd>Shift</kbd>+<kbd>H</kbd>), long-press an empty spot → **Edit** → **Add Widget**, search for **Finly**, pick **Balance**, then **Add Widget**.
+
+You should see an orange tile with **Balance** and the amount.
+
+### Limitations and next steps
+
+- **Mock data** — once there's a real backend, call `BalanceWidget.updateSnapshot(...)` wherever the balance changes (for example, after fetching it).
+- **Updates only when the app runs** — the widget can't fetch data by itself; it shows the last snapshot the app sent. `BalanceWidget.updateTimeline([...])` can schedule several future entries if needed.
+- **iOS only** — `expo-widgets` also has Android support behind the plugin's `enableAndroid` option, which isn't turned on. On Android the widget calls do nothing.
+- **iOS 17+ for the background** — the orange background uses `containerBackground`, which iOS only applies on iOS 17 and later. The app supports iOS 16.4+, so on iOS 16 the widget currently has no orange background (white text on the default background).
+- **Physical iPhone** — needs code signing with a paid Apple Developer Program team, because App Groups aren't available to free personal teams. The simulator needs neither.
+- **Tapping** just opens the app. The `widgetURL` modifier could deep-link to a specific screen using the `finly://` scheme.
+
+### Troubleshooting
+
+| Symptom                                                    | Cause / fix                                                                                                                                                                                                                                    |
+| ---------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Cannot find native module 'ExpoWidgets'`                  | You're running in Expo Go, which doesn't include the widget module. Open the development build instead.                                                                                                                                        |
+| The widget shows a red "No layout found" box               | The app hasn't registered the widget yet — open Finly and go to Home once.                                                                                                                                                                     |
+| `createWidget` fails right after installing `expo-widgets` | Metro was started before the package was installed, so Babel didn't apply the `'widget'` transform. Restart it with `npx expo start --clear`.                                                                                                  |
+| `No code signing certificates are available`               | An entitlement that needs signing even on the simulator was added. Clerk's Sign in with Apple entitlement is the one we hit — it's off via `appleSignIn: false` in `app.json`. Turn it back on (and set up signing) when adding Apple sign-in. |
+| `pod: command not found` during `npm run ios`              | CocoaPods isn't on your `PATH`. With Homebrew on Apple Silicon it lives in `/opt/homebrew/bin`.                                                                                                                                                |
+
 ## Styling
 
 Styling uses **NativeWind**, which lets Tailwind utility classes be used directly on React Native components via `className`.
@@ -265,19 +344,19 @@ graph LR
 
 ## Configuration Files Reference
 
-| File                                   | Purpose                                                                                                                                                                                                                                                   |
-| -------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `app.json`                             | Expo app manifest: app name/slug/version, icon & splash screen, iOS/Android/Web platform config, plugins (`expo-router`, `expo-splash-screen`, `expo-font`, `@clerk/expo`, `expo-secure-store`), and experimental flags (`typedRoutes`, `reactCompiler`). |
-| `babel.config.js`                      | Babel presets: `babel-preset-expo` (with NativeWind's JSX import source) and `nativewind/babel`.                                                                                                                                                          |
-| `metro.config.js`                      | Extends Expo's default Metro config with NativeWind, using `global.css` as the Tailwind CSS entry point.                                                                                                                                                  |
-| `tailwind.config.js`                   | Tailwind theme configuration — content paths, extended color palette, spacing scale, border radius, font family tokens.                                                                                                                                   |
-| `tsconfig.json`                        | Extends `expo/tsconfig.base`; strict type-checking; `@/*` path alias resolving to the project root.                                                                                                                                                       |
-| `eslint.config.js`                     | Flat ESLint config built on `eslint-config-expo`; ignores `dist/*`.                                                                                                                                                                                       |
-| `.prettierrc.json` / `.prettierignore` | Prettier formatting rules plus `prettier-plugin-tailwindcss` for class-name sorting; ignore list for generated/vendor files.                                                                                                                              |
-| `.vscode/settings.json`                | Enables format-on-save code actions: fix-all, organize imports, sort members.                                                                                                                                                                             |
-| `.vscode/extensions.json`              | Recommends the Expo VS Code extension.                                                                                                                                                                                                                    |
-| `skills-lock.json`                     | Lockfile for Clerk skills installed via `npx skills add` into `.agents/skills/` and `.claude/skills/` (both git-ignored).                                                                                                                                 |
-| `.gitignore`                           | Excludes `node_modules`, `.expo`, native `ios`/`android` build folders, env files, build artifacts, installed skills, and OS/editor cruft.                                                                                                                |
+| File                                   | Purpose                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `app.json`                             | Expo app manifest: app name/slug/version, icon & splash screen, iOS/Android/Web platform config, plugins (`expo-router`, `expo-splash-screen`, `expo-font`, `@clerk/expo` with `appleSignIn: false`, `expo-secure-store`, `expo-localization`, `expo-notifications`, `expo-image`, `expo-status-bar`, `expo-web-browser`, and `expo-widgets` for the [home screen widget](#home-screen-widget-ios)), and experimental flags (`typedRoutes`, `reactCompiler`). |
+| `babel.config.js`                      | Babel presets: `babel-preset-expo` (with NativeWind's JSX import source) and `nativewind/babel`.                                                                                                                                                                                                                                                                                                                                                              |
+| `metro.config.js`                      | Extends Expo's default Metro config with NativeWind, using `global.css` as the Tailwind CSS entry point.                                                                                                                                                                                                                                                                                                                                                      |
+| `tailwind.config.js`                   | Tailwind theme configuration — content paths, extended color palette, spacing scale, border radius, font family tokens.                                                                                                                                                                                                                                                                                                                                       |
+| `tsconfig.json`                        | Extends `expo/tsconfig.base`; strict type-checking; `@/*` path alias resolving to the project root.                                                                                                                                                                                                                                                                                                                                                           |
+| `eslint.config.js`                     | Flat ESLint config built on `eslint-config-expo`; ignores `dist/*`.                                                                                                                                                                                                                                                                                                                                                                                           |
+| `.prettierrc.json` / `.prettierignore` | Prettier formatting rules plus `prettier-plugin-tailwindcss` for class-name sorting; ignore list for generated/vendor files.                                                                                                                                                                                                                                                                                                                                  |
+| `.vscode/settings.json`                | Enables format-on-save code actions: fix-all, organize imports, sort members.                                                                                                                                                                                                                                                                                                                                                                                 |
+| `.vscode/extensions.json`              | Recommends the Expo VS Code extension.                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| `skills-lock.json`                     | Lockfile for Clerk skills installed via `npx skills add` into `.agents/skills/` and `.claude/skills/` (both git-ignored).                                                                                                                                                                                                                                                                                                                                     |
+| `.gitignore`                           | Excludes `node_modules`, `.expo`, native `ios`/`android` build folders, env files, build artifacts, installed skills, and OS/editor cruft.                                                                                                                                                                                                                                                                                                                    |
 
 ## Type Declarations
 
@@ -397,7 +476,7 @@ classDiagram
 
 - `(tabs)/subscriptions.tsx`, `(tabs)/insights.tsx`, and `subscriptions/[id].tsx` render static placeholder text — no real subscription list/detail UI or charts yet.
 - `onboarding.tsx` is unrouted from the rest of the app (nothing links to `/onboarding`) and contains inline developer notes on Expo Router concepts rather than real UI.
-- Subscription/user data is hardcoded in `constants/data.ts` — there is no API client or persistence layer.
+- Subscription/user data is hardcoded in `constants/data.ts` — there is no API client or persistence layer. This includes the balance shown by the [home screen widget](#home-screen-widget-ios).
 - Social/OAuth sign-in is not wired up; only Clerk's email + password strategy is used.
 
 # Claude Chat Resume
