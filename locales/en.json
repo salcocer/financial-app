@@ -30,7 +30,8 @@
         "title": "Insights"
     },
     "subscriptions": {
-        "title": "Subscriptions"
+        "title": "Subscriptions",
+        "sendNotification": "Send Notification"
     },
     "subscriptionDetail": {
         "title": "Subscription Details",

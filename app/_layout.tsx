@@ -1,3 +1,4 @@
+import NotificationRouter from '@/components/NotificationRouter';
 import UserProfileSync from '@/components/UserProfileSync';
 import { ClerkProvider } from '@clerk/expo';
 import { tokenCache } from '@clerk/expo/token-cache';
@@ -38,6 +39,7 @@ export default function RootLayout() {
     return (
         <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
             <UserProfileSync />
+            <NotificationRouter />
             <Stack screenOptions={{ headerShown: false }} />
         </ClerkProvider>
     );

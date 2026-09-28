@@ -379,6 +379,14 @@
         @apply font-sans-bold text-background;
     }
 
+    .subscriptions-notify-button {
+        @apply mt-6 items-center rounded-2xl bg-primary py-4;
+    }
+
+    .subscriptions-notify-text {
+        @apply font-sans-bold text-background;
+    }
+
     .modal-overlay {
         @apply flex-1 bg-black/50;
     }

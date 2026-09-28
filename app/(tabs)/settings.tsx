@@ -1,5 +1,6 @@
 import images from '@/constants/images';
 import { useUserStore } from '@/lib/store/userStore';
+import BalanceWidget from '@/widgets/BalanceWidget';
 import { useAuth, useUser } from '@clerk/expo';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
@@ -20,6 +21,7 @@ const Settings = () => {
     const handleSignOut = async () => {
         await signOut();
         clearUser();
+        BalanceWidget.updateSnapshot({});
     };
 
     return (
